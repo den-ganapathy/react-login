@@ -1,7 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { HeaderWrapper } from "../styles/headerStyles";
 
 function Header() {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+
+  useEffect(() => {
+    const token = user?.token;
+    setUser(JSON.parse(localStorage.getItem("profile")));
+  }, []);
+
+  console.log(user);
   const handleSignIn = () => {};
 
   const handleSignUp = () => {};

@@ -15,8 +15,9 @@ export const LoginWrapper = styled.div`
     box-shadow: 0 0 5px grey;
     background-color: white;
     & .signin {
-      margin-top: 2rem;
-      width: 8rem;
+      margin: 2rem auto;
+      margin-bottom: 0;
+      width: 90%;
       border: none;
       cursor: pointer;
       border-radius: 0.5rem;
@@ -27,6 +28,14 @@ export const LoginWrapper = styled.div`
       :hover {
         opacity: 0.9;
       }
+    }
+    .textstyle {
+      text-align: center;
+      margin: 2rem;
+    }
+    .icons {
+      display: flex;
+      justify-content: space-evenly;
     }
   }
 `;
@@ -40,7 +49,7 @@ export const InputWrapper = styled.div`
     justify-content: center;
     input {
       width: 100%;
-      padding: 0.5rem;
+      padding: 0.8rem;
     }
   }
 `;
