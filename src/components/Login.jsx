@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { LoginWrapper, InputWrapper } from "./../styles/loginStyles";
 import { IconButton } from "./../styles/buttonStyles";
 import fbIcon from "./../assets/images/fbIcon.png";
@@ -7,19 +7,22 @@ import twitterIcon from "./../assets/images/twitterIcon.png";
 import GoogleLogin from "react-google-login";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { PageContext } from "./../App";
 
 function Login() {
   const [userName, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
   const dispatch = useDispatch();
+  const setActivePage = useContext(PageContext);
 
   const googleSuccess = async (res) => {
     const result = res?.profileObj;
     const token = res?.tokenId;
     try {
       dispatch({ type: "AUTH", data: { result, token } });
-      history.pushState("/");
+      setActivePage("home");
+      history.push("/");
     } catch (error) {
       console.log(error);
     }

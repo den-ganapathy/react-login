@@ -1,26 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { HeaderWrapper } from "../styles/headerStyles";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
-function Header() {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
-
-  useEffect(() => {
-    const token = user?.token;
-    setUser(JSON.parse(localStorage.getItem("profile")));
-  }, []);
-
-  console.log(user);
+function Header({ activepage }) {
+  const dispatch = useDispatch();
+  const history = useHistory();
   const handleSignIn = () => {};
-
   const handleSignUp = () => {};
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" });
+    history.push("/register");
+  };
   return (
     <HeaderWrapper>
-      <button onClick={() => handleSignIn()} className="signin">
-        Sign In
-      </button>
-      <button onClick={() => handleSignUp()} className="signup">
-        Sign Up
-      </button>
+      {activepage === "register" ? (
+        <>
+          <button onClick={() => handleSignIn()} className="signin">
+            Sign In
+          </button>
+          <button onClick={() => handleSignUp()} className="signup">
+            Sign Up
+          </button>
+        </>
+      ) : (
+        <button onClick={() => handleLogout()} className="signup">
+          Logout
+        </button>
+      )}
     </HeaderWrapper>
   );
 }

@@ -1,12 +1,9 @@
 import React from "react";
-import Header from "./../components/Header";
-import Login from "./../components/Login";
-
-function Home() {
+import HomePage from "./../components/HomePage";
+function Home(activepage, setActivePage) {
   return (
     <>
-      <Header />
-      <Login />
+      <HomePage />
     </>
   );
 }
