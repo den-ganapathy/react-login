@@ -8,10 +8,11 @@ import GoogleLogin from "react-google-login";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { PageContext } from "./../App";
+import { signin, signUp } from "./../actions/auth";
 
 function Login() {
-  const [userName, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({});
+  const [signIn, setSignIn] = useState(false);
   const history = useHistory();
   const dispatch = useDispatch();
   const setActivePage = useContext(PageContext);
@@ -31,16 +32,26 @@ function Login() {
     console.log("unsuccessful");
   };
 
-  const renderTextbox = (id, label, value, setValue, type = "text") => {
+  const handleForm = () => {
+    if (signIn) {
+      dispatch(signin(formData, history));
+    } else {
+      dispatch(signUp(formData, history));
+    }
+  };
+
+  const renderTextbox = (id, label, type = "text") => {
+    console.log(formData, id);
     return (
       <InputWrapper>
         <div className="label">{label}</div>
-        <div className="inputbox">
+        <div className="inputbox1">
           <input
             id={id}
             type={type}
-            value={value}
-            onChange={(e) => setValue(e.target.value)}
+            onChange={(e) =>
+              setFormData({ ...formData, [e.target.id]: e.target.value })
+            }
             className=""
           ></input>
         </div>
@@ -51,15 +62,15 @@ function Login() {
   return (
     <LoginWrapper>
       <div className="login-container">
-        {renderTextbox("name", "Name", userName, setUsername)}
-        {renderTextbox(
-          "password",
-          "Password",
-          password,
-          setPassword,
-          "password"
-        )}
-        <button className="signin">Sign In</button>
+        {!signIn && renderTextbox("firstname", "Firstname")}
+        {!signIn && renderTextbox("lastname", "Lastname")}
+        {renderTextbox("email", "Email")}
+        {renderTextbox("password", "Password", "password")}
+        {!signIn &&
+          renderTextbox("confirmpassword", "Confirm Password", "password")}
+        <button className="signin" onClick={() => handleForm()}>
+          {signIn ? "Sign In" : "Register"}
+        </button>
         <p className="textstyle">OR</p>
         <div className="icons">
           <GoogleLogin
@@ -77,6 +88,15 @@ function Login() {
           <IconButton bgImg={fbIcon}></IconButton>
           <IconButton bgImg={twitterIcon}></IconButton>
         </div>
+        {signIn ? (
+          <div className="formfooter" onClick={() => setSignIn(false)}>
+            Dont have account? Sign Up
+          </div>
+        ) : (
+          <div className="formfooter" onClick={() => setSignIn(true)}>
+            Already Have An Account? Sign In
+          </div>
+        )}
       </div>
     </LoginWrapper>
   );

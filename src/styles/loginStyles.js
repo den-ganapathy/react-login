@@ -37,6 +37,12 @@ export const LoginWrapper = styled.div`
       display: flex;
       justify-content: space-evenly;
     }
+    .formfooter {
+      text-align: right;
+      color: #123456;
+      padding-top: 1rem;
+      cursor: pointer;
+    }
   }
 `;
 
@@ -44,11 +50,20 @@ export const InputWrapper = styled.div`
   .label {
     padding: 1rem 0;
   }
-  .inputbox {
+  .inputbox1 {
     display: flex;
     justify-content: center;
     input {
       width: 100%;
+      padding: 0.8rem;
+    }
+  }
+  .inputbox2 {
+    display: flex;
+    justify-content: center;
+    flex: 0 0 10%;
+    input {
+      width: 50%;
       padding: 0.8rem;
     }
   }
