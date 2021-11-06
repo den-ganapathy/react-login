@@ -29,6 +29,12 @@ export const LoginWrapper = styled.div`
         opacity: 0.9;
       }
     }
+    .forgotpassword {
+      text-align: right;
+      color: #123456;
+      padding-top: 1rem;
+      cursor: pointer;
+    }
     .textstyle {
       text-align: center;
       margin: 2rem;

@@ -7,7 +7,7 @@ import twitterIcon from "./../assets/images/twitterIcon.png";
 import GoogleLogin from "react-google-login";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { PageContext } from "./../App";
+import { PageContext } from "./../root/Routes";
 import { signin, signUp } from "./../actions/auth";
 
 function Login() {
@@ -68,6 +68,15 @@ function Login() {
         {renderTextbox("password", "Password", "password")}
         {!signIn &&
           renderTextbox("confirmpassword", "Confirm Password", "password")}
+        {signIn && (
+          <div
+            onClick={() => history.push("/forgot-password")}
+            className="forgotpassword"
+          >
+            {" "}
+            Forgot Password
+          </div>
+        )}
         <button className="signin" onClick={() => handleForm()}>
           {signIn ? "Sign In" : "Register"}
         </button>
