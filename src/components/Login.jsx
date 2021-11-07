@@ -12,7 +12,7 @@ import { signin, signUp } from "./../actions/auth";
 
 function Login() {
   const [formData, setFormData] = useState({});
-  const [signIn, setSignIn] = useState(false);
+  const [signIn, setSignIn] = useState(true);
   const history = useHistory();
   const dispatch = useDispatch();
   const setActivePage = useContext(PageContext);
