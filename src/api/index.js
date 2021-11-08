@@ -17,5 +17,9 @@ export const signin = (formData) =>
   API.post(`${baseURL}/user/signin`, formData);
 export const signUp = (formData) =>
   API.post(`${baseURL}/user/signup`, formData);
+export const checkEmail = (formData) =>
+  API.post(`${baseURL}/user/check-email`, formData);
+export const updatePassword = (formData) =>
+  API.put(`${baseURL}/user/change-password`, formData.formData);
 
 console.log(signin);

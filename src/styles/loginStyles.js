@@ -1,9 +1,13 @@
 import styled from "styled-components";
+import backImg from "./../assets/images/back2.jpg";
 
 export const LoginWrapper = styled.div`
+  background: url(${backImg});
+  background-repeat: no-repeat;
+  background-size: cover;
   display: flex;
   width: 100vw;
-  height: 80vh;
+  height: 100vh;
   justify-content: center;
   align-items: center;
   .login-container {

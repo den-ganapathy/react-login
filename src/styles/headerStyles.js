@@ -3,8 +3,12 @@ import styled from "styled-components";
 export const HeaderWrapper = styled.div`
   display: flex;
   justify-content: flex-end;
-  padding: 1rem 2rem;
+  padding: 1rem 0rem;
   box-shadow: 0 0 5px grey;
+  position: fixed;
+  width: 100vw;
+  background-color: #000;
+  opacity: 0.5;
   .signin {
     margin: 0 1rem;
     border: none;

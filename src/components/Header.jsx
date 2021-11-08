@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import { HeaderWrapper } from "../styles/headerStyles";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { PageContext } from "./../root/Routes";
 
 function Header({ activepage }) {
   const dispatch = useDispatch();
   const history = useHistory();
+  const setActivePage = useContext(PageContext);
+  console.log(activepage);
+
   const handleSignIn = () => {};
   const handleSignUp = () => {};
   const handleLogout = () => {
+    setActivePage("register");
+
     dispatch({ type: "LOGOUT" });
     history.push("/register");
   };

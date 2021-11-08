@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-
+import { useDispatch, useSelector } from "react-redux";
 import { ForgotpasswordWrapper } from "./../styles/forgotpasswordStyles";
+import { checkEmail, updatePassword } from "../actions/auth";
 
 const ForgotPassword = () => {
   const [submitEmail, setSubmitEmail] = useState(false);
@@ -12,25 +13,45 @@ const ForgotPassword = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    confirmpassword: "",
   });
+  const dispatch = useDispatch();
   const history = useHistory();
+  const emailData = useSelector((state) => state.auth);
+  const updatePasswordData = useSelector((state) => state.auth);
+
+  console.log(emailData, updatePasswordData);
 
   const handleSubmit = () => {
-    setSubmitOtp(true);
-    setSubmitEmail(false);
+    console.log(otp);
+    if (otp === "1111") {
+      setSubmitOtp(true);
+      setSubmitEmail(false);
+    }
   };
 
   console.log(formData);
 
   const handleConfirm = () => {
+    console.log(formData.password, formData.confirmpassword);
     if (formData.password === formData.confirmpassword) {
-      setSubmitPassword(true);
-      setSubmitOtp(false);
+      dispatch(updatePassword({ formData }));
+      console.log(updatePasswordData.message);
+      if (updatePasswordData.message === "Success") {
+        setSubmitPassword(true);
+        setSubmitOtp(false);
+      }
     }
   };
   const handleNext = () => {
-    setSubmitEmail(true);
-    setSubmitOtp(false);
+    dispatch(checkEmail({ email: formData.email })).then((res) => {
+      console.log(res);
+      console.log(emailData.message);
+      if (emailData.message === "user exist") {
+        setSubmitEmail(true);
+        setSubmitOtp(false);
+      }
+    });
   };
   const handleLogin = () => {
     if (submitPassword) {
@@ -54,8 +75,17 @@ const ForgotPassword = () => {
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    console.log(formData);
+
+    if (e.target.id !== "otp") {
+      console.log(formData);
+      setFormData({ ...formData, [e.target.id]: e.target.value });
+    } else {
+      setOtp(e.target.value);
+    }
   };
+
+  useEffect(() => {}, []);
 
   return (
     <ForgotpasswordWrapper>
@@ -77,7 +107,14 @@ const ForgotPassword = () => {
           ></input>
         )}
         {submitEmail && (
-          <input type="text" className="fp-textbox" required></input>
+          <input
+            id="otp"
+            type="text"
+            maxLength={4}
+            className="fp-textbox"
+            onChange={(e) => handleChange(e)}
+            required
+          ></input>
         )}
         {submitOtp && (
           <>

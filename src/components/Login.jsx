@@ -34,9 +34,13 @@ function Login() {
 
   const handleForm = () => {
     if (signIn) {
-      dispatch(signin(formData, history));
+      dispatch(signin(formData, history)).then(() => {
+        setActivePage("home");
+      });
     } else {
-      dispatch(signUp(formData, history));
+      dispatch(signUp(formData, history)).then(() => {
+        setActivePage("home");
+      });
     }
   };
 
