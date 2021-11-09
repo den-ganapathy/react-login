@@ -1,9 +1,13 @@
 import styled from "styled-components";
+import backImg from "./../assets/images/back2.jpg";
 
 export const ForgotpasswordWrapper = styled.div`
+  background: url(${backImg});
+  background-repeat: no-repeat;
+  background-size: cover;
   display: flex;
   width: 100vw;
-  height: 80vh;
+  height: 100vh;
   justify-content: center;
   align-items: center;
   .fp-container {
@@ -24,6 +28,7 @@ export const ForgotpasswordWrapper = styled.div`
     .congratulations-text {
       font-size: 1.3rem;
       color: #123456;
+      font-weight: bold;
     }
     .fp-button {
       display: flex;

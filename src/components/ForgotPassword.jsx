@@ -37,20 +37,12 @@ const ForgotPassword = () => {
     if (formData.password === formData.confirmpassword) {
       dispatch(updatePassword({ formData }));
       console.log(updatePasswordData.message);
-      if (updatePasswordData.message === "Success") {
-        setSubmitPassword(true);
-        setSubmitOtp(false);
-      }
     }
   };
   const handleNext = () => {
     dispatch(checkEmail({ email: formData.email })).then((res) => {
       console.log(res);
       console.log(emailData.message);
-      if (emailData.message === "user exist") {
-        setSubmitEmail(true);
-        setSubmitOtp(false);
-      }
     });
   };
   const handleLogin = () => {
@@ -85,22 +77,36 @@ const ForgotPassword = () => {
     }
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (emailData.message === "user exist") {
+      setSubmitEmail(true);
+      setSubmitOtp(false);
+    }
+    if (updatePasswordData.message === "Success") {
+      setSubmitPassword(true);
+      setSubmitOtp(false);
+    }
+  }, [emailData.message, updatePasswordData.message]);
 
   return (
     <ForgotpasswordWrapper>
       <div className="fp-container">
         <div className="fp-title">
-          {submitEmail
-            ? "Please enter the OTP"
-            : submitOtp || submitPassword
-            ? ""
-            : "Please enter your registered email"}
+          {submitEmail ? (
+            <div>
+              Please enter the OTP <p>Enter Otp as 1111 to bypass this step</p>
+            </div>
+          ) : submitOtp || submitPassword ? (
+            ""
+          ) : (
+            "Please enter your registered email"
+          )}
         </div>
         {!submitEmail && !submitOtp && !submitPassword && (
           <input
             id="email"
             type="text"
+            value={formData.email}
             className="fp-textbox"
             onChange={(e) => handleChange(e)}
             required
@@ -110,6 +116,7 @@ const ForgotPassword = () => {
           <input
             id="otp"
             type="text"
+            value={otp}
             maxLength={4}
             className="fp-textbox"
             onChange={(e) => handleChange(e)}
@@ -118,16 +125,20 @@ const ForgotPassword = () => {
         )}
         {submitOtp && (
           <>
+            <div className="fp-title">Enter New Password</div>
             <input
               id="password"
-              type="text"
+              type="password"
               className="fp-textbox"
+              value={formData.password}
               onChange={(e) => handleChange(e)}
               required
             ></input>
+            <div className="fp-title">Confirm Password</div>
             <input
               id="confirmpassword"
-              type="text"
+              value={formData.confirmpassword}
+              type="password"
               className="fp-textbox"
               onChange={(e) => handleChange(e)}
             ></input>
@@ -140,9 +151,11 @@ const ForgotPassword = () => {
           </div>
         )}
         <div className="fp-button">
-          <button className="fb-button-back" onClick={() => handleBack()}>
-            Go Back
-          </button>
+          {!submitPassword && (
+            <button className="fb-button-back" onClick={() => handleBack()}>
+              Go Back
+            </button>
+          )}
           <button
             className="fb-button-next"
             onClick={

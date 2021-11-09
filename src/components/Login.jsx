@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { LoginWrapper, InputWrapper } from "./../styles/loginStyles";
 import { IconButton } from "./../styles/buttonStyles";
 import fbIcon from "./../assets/images/fbIcon.png";
-import gmailIcon from "./../assets/images/gmailIcon.png";
+import googleIcon from "./../assets/images/google.png";
 import twitterIcon from "./../assets/images/twitterIcon.png";
 import GoogleLogin from "react-google-login";
 import { useDispatch } from "react-redux";
@@ -13,6 +13,13 @@ import { signin, signUp } from "./../actions/auth";
 function Login() {
   const [formData, setFormData] = useState({});
   const [signIn, setSignIn] = useState(true);
+  const [error, setError] = useState({
+    firstname: "",
+    lastname: "",
+    email: "",
+    password: "",
+    confirmpassword: "",
+  });
   const history = useHistory();
   const dispatch = useDispatch();
   const setActivePage = useContext(PageContext);
@@ -44,21 +51,27 @@ function Login() {
     }
   };
 
-  const renderTextbox = (id, label, type = "text") => {
+  const renderTextbox = (id, label, type = "text", size = "half") => {
     console.log(formData, id);
     return (
-      <InputWrapper>
+      <InputWrapper size={size}>
         <div className="label">{label}</div>
         <div className="inputbox1">
           <input
             id={id}
             type={type}
-            onChange={(e) =>
-              setFormData({ ...formData, [e.target.id]: e.target.value })
-            }
+            onChange={(e) => {
+              setFormData({ ...formData, [e.target.id]: e.target.value });
+              if (e.target.value === "") {
+                setError({ ...error, [e.target.id]: "* cannot be empty" });
+              } else {
+                setError({ ...error, [e.target.id]: "" });
+              }
+            }}
             className=""
           ></input>
         </div>
+        {error[id].length ? <div>* Required Field</div> : ""}
       </InputWrapper>
     );
   };
@@ -66,12 +79,20 @@ function Login() {
   return (
     <LoginWrapper>
       <div className="login-container">
-        {!signIn && renderTextbox("firstname", "Firstname")}
-        {!signIn && renderTextbox("lastname", "Lastname")}
-        {renderTextbox("email", "Email")}
-        {renderTextbox("password", "Password", "password")}
-        {!signIn &&
-          renderTextbox("confirmpassword", "Confirm Password", "password")}
+        <div className="textbox">
+          {!signIn && renderTextbox("firstname", "Firstname", "text")}
+
+          {!signIn && renderTextbox("lastname", "Lastname", "text")}
+          {renderTextbox("email", "Email", "text", "full")}
+          {renderTextbox("password", "Password", "password", "full")}
+          {!signIn &&
+            renderTextbox(
+              "confirmpassword",
+              "Confirm Password",
+              "password",
+              "full"
+            )}
+        </div>
         {signIn && (
           <div
             onClick={() => history.push("/forgot-password")}
@@ -89,17 +110,15 @@ function Login() {
           <GoogleLogin
             clientId="304748262652-cqqq0gb0mq1nvbb7jh60geg1sm8msptf.apps.googleusercontent.com"
             render={(renderProps) => (
-              <IconButton
-                bgImg={gmailIcon}
-                onClick={renderProps.onClick}
-              ></IconButton>
+              <div className="googleicon" onClick={renderProps.onClick}>
+                <img src={googleIcon} alt=""></img>
+                <div>Sign In With Google</div>
+              </div>
             )}
             onSuccess={googleSuccess}
             onFailure={googleFailure}
             cookiePolicy={"single_host_origin"}
           />
-          <IconButton bgImg={fbIcon}></IconButton>
-          <IconButton bgImg={twitterIcon}></IconButton>
         </div>
         {signIn ? (
           <div className="formfooter" onClick={() => setSignIn(false)}>
