@@ -15,7 +15,7 @@ export const LoginWrapper = styled.div`
   justify-content: center;
   align-items: center;
   ${media.mobile} {
-    width: 90vw;
+    width: 100vw;
     margin: 0 auto;
   }
 
@@ -28,7 +28,9 @@ export const LoginWrapper = styled.div`
     box-shadow: 0 0 5px grey;
     background-color: white;
     ${media.mobile} {
+      width: 80vw;
       padding: 1rem;
+      margin-top: 1rem;
     }
 
     .textbox {
@@ -51,6 +53,8 @@ export const LoginWrapper = styled.div`
       }
       ${media.mobile} {
         margin: 1rem auto;
+        font-size: 0.8rem;
+        padding: 0.6rem 0;
       }
     }
     .forgotpassword {
@@ -58,6 +62,9 @@ export const LoginWrapper = styled.div`
       color: #123456;
       padding-top: 1rem;
       cursor: pointer;
+      ${media.mobile} {
+        font-size: 0.8rem;
+      }
     }
     .textstyle {
       text-align: center;
@@ -102,6 +109,7 @@ export const LoginWrapper = styled.div`
             height: 1rem;
           }
           div {
+            font-size: 0.8rem;
           }
         }
       }
@@ -111,6 +119,9 @@ export const LoginWrapper = styled.div`
       color: #123456;
       padding-top: 1rem;
       cursor: pointer;
+      ${media.mobile} {
+        font-size: 0.8rem;
+      }
     }
   }
 `;
@@ -138,5 +149,9 @@ export const InputWrapper = styled.div`
         padding: 0.5rem;
       }
     }
+  }
+  .errorMessage {
+    color: red;
+    font-size: 0.8rem;
   }
 `;

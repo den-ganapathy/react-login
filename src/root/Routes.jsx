@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Router } from "@reach/router";
 import ProtectedRoute from "./ProtectedRoutes";
 import SignIn from "../Pages/SignIn";
 import AuthenticatedLanding from "../Pages/AuthenticatedLanding";
@@ -11,19 +11,22 @@ export const PageContext = React.createContext();
 
 const Routes = () => {
   const [activepage, setActivepage] = useState("register");
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  // const user = JSON.parse(localStorage.getItem("profile"));
+  // console.log(!user);
+
+  if (isAuthenticated === undefined) {
+    return <div>loading...</div>;
+  }
 
   return (
     <PageContext.Provider value={setActivepage}>
+      <Header activepage={activepage} />
+
       <Router>
-        <Header activepage={activepage} />
-        {/* <ProtectedRoute
-          path="/*"
-          component={AuthenticatedLanding}
-          setActivepage={setActivepage}
-        /> */}
-        <Route exact path="/forgot-password" component={ForgotPassword} />
-        <Route exact path="/" component={Home} />
-        <Route exact path="/register" component={SignIn} />
+        <ProtectedRoute path="/*" component={AuthenticatedLanding} />
+        <SignIn exact path="/login" />
+        <ForgotPassword exact path="/forgot-password" />
       </Router>
     </PageContext.Provider>
   );

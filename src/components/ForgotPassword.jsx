@@ -3,12 +3,13 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ForgotpasswordWrapper } from "./../styles/forgotpasswordStyles";
 import { checkEmail, updatePassword } from "../actions/auth";
+import { navigate } from "@reach/router";
 
 const ForgotPassword = () => {
   const [submitEmail, setSubmitEmail] = useState(false);
   const [submitOtp, setSubmitOtp] = useState(false);
   const [submitPassword, setSubmitPassword] = useState(false);
-
+  const [errorMessage, setErrorMessage] = useState("");
   const [otp, setOtp] = useState("");
   const [formData, setFormData] = useState({
     email: "",
@@ -18,6 +19,7 @@ const ForgotPassword = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const emailData = useSelector((state) => state.auth);
+
   const updatePasswordData = useSelector((state) => state.auth);
 
   console.log(emailData, updatePasswordData);
@@ -27,6 +29,7 @@ const ForgotPassword = () => {
     if (otp === "1111") {
       setSubmitOtp(true);
       setSubmitEmail(false);
+      submitPassword(false);
     }
   };
 
@@ -39,31 +42,45 @@ const ForgotPassword = () => {
       console.log(updatePasswordData.message);
     }
   };
-  const handleNext = () => {
-    dispatch(checkEmail({ email: formData.email })).then((res) => {
-      console.log(res);
-      console.log(emailData.message);
-    });
+  const handleNext = async () => {
+    dispatch(checkEmail({ email: formData.email }));
+    console.log(emailData);
+    if (emailData.message === "user exist") {
+      setSubmitEmail(true);
+    }
+    console.log(emailData);
   };
+
   const handleLogin = () => {
-    if (submitPassword) {
-      history.push("/register");
+    setErrorMessage("");
+    if (emailData.message === "user exist") {
+      setSubmitPassword(false);
+      setSubmitOtp(false);
+      setSubmitEmail(true);
+    } else if (otp === "1111") {
+      setSubmitPassword(false);
+      setSubmitOtp(true);
+      setSubmitEmail(false);
+    } else {
+      setSubmitPassword(true);
+      setSubmitOtp(false);
+      setSubmitEmail(false);
     }
   };
 
   const handleBack = () => {
-    if (submitPassword) {
-      setSubmitPassword(false);
-      setSubmitOtp(true);
-    } else if (submitOtp) {
-      setSubmitOtp(false);
-      setSubmitEmail(true);
-    } else if (submitEmail) {
-      setSubmitOtp(false);
-      setSubmitEmail(false);
-    } else {
-      history.push("/register");
-    }
+    // if (submitPassword) {
+    //   setSubmitPassword(false);
+    //   setSubmitOtp(true);
+    // } else if (submitOtp) {
+    //   setSubmitOtp(false);
+    //   setSubmitEmail(true);
+    // } else if (submitEmail) {
+    //   setSubmitOtp(false);
+    //   setSubmitEmail(false);
+    // } else {
+    navigate("/login");
+    // }
   };
 
   const handleChange = (e) => {
@@ -78,15 +95,8 @@ const ForgotPassword = () => {
   };
 
   useEffect(() => {
-    if (emailData.message === "user exist") {
-      setSubmitEmail(true);
-      setSubmitOtp(false);
-    }
-    if (updatePasswordData.message === "Success") {
-      setSubmitPassword(true);
-      setSubmitOtp(false);
-    }
-  }, [emailData.message, updatePasswordData.message]);
+    // handleLogin();
+  }, [emailData.message, handleLogin, updatePasswordData.message]);
 
   return (
     <ForgotpasswordWrapper>
@@ -112,6 +122,7 @@ const ForgotPassword = () => {
             required
           ></input>
         )}
+        {errorMessage !== "" && <div>{errorMessage}</div>}
         {submitEmail && (
           <input
             id="otp"
@@ -160,7 +171,7 @@ const ForgotPassword = () => {
             className="fb-button-next"
             onClick={
               submitPassword
-                ? () => history.push("/register")
+                ? () => navigate("/register")
                 : submitOtp
                 ? () => handleConfirm()
                 : submitEmail

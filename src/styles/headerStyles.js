@@ -1,6 +1,11 @@
 import styled from "styled-components";
 
+const media = {
+  mobile: "@media(max-width:600px)",
+};
+
 export const HeaderWrapper = styled.div`
+  z-index: 99;
   display: flex;
   justify-content: flex-end;
   padding: 1rem 0rem;
@@ -8,7 +13,7 @@ export const HeaderWrapper = styled.div`
   position: fixed;
   width: 100vw;
   background-color: #000;
-  opacity: 0.5;
+  opacity: 0.9;
   .signin {
     margin: 0 1rem;
     border: none;
@@ -22,6 +27,10 @@ export const HeaderWrapper = styled.div`
     :hover {
       transform: scale(1.05);
       opacity: 0.8;
+    }
+    ${media.mobile} {
+      font-size: 0.8rem;
+      padding: 0rem 1rem;
     }
   }
   .signup {
@@ -37,6 +46,10 @@ export const HeaderWrapper = styled.div`
     :hover {
       transform: scale(1.05);
       opacity: 0.8;
+    }
+    ${media.mobile} {
+      font-size: 0.8rem;
+      padding: 0.5rem 1rem;
     }
   }
 `;

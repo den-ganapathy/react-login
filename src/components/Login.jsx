@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { PageContext } from "./../root/Routes";
 import { signin, signUp } from "./../actions/auth";
+import { navigate } from "@reach/router";
 
 function Login() {
   const [formData, setFormData] = useState({});
@@ -21,6 +22,8 @@ function Login() {
     confirmpassword: "",
   });
   const history = useHistory();
+  console.log(history);
+
   const dispatch = useDispatch();
   const setActivePage = useContext(PageContext);
 
@@ -30,7 +33,7 @@ function Login() {
     try {
       dispatch({ type: "AUTH", data: { result, token } });
       setActivePage("home");
-      history.push("/");
+      navigate("/");
     } catch (error) {
       console.log(error);
     }
@@ -39,15 +42,11 @@ function Login() {
     console.log("unsuccessful");
   };
 
-  const handleForm = () => {
+  const handleForm = async () => {
     if (signIn) {
-      dispatch(signin(formData, history)).then(() => {
-        setActivePage("home");
-      });
+      dispatch(signin(formData, navigate));
     } else {
-      dispatch(signUp(formData, history)).then(() => {
-        setActivePage("home");
-      });
+      dispatch(signUp(formData, navigate));
     }
   };
 
@@ -58,6 +57,7 @@ function Login() {
         <div className="label">{label}</div>
         <div className="inputbox1">
           <input
+            required
             id={id}
             type={type}
             onChange={(e) => {
@@ -71,7 +71,11 @@ function Login() {
             className=""
           ></input>
         </div>
-        {error[id].length ? <div>* Required Field</div> : ""}
+        {error[id].length ? (
+          <div className="errorMessage">* Required Field</div>
+        ) : (
+          ""
+        )}
       </InputWrapper>
     );
   };
@@ -79,9 +83,9 @@ function Login() {
   return (
     <LoginWrapper>
       <div className="login-container">
+        <div className="login-error"></div>
         <div className="textbox">
           {!signIn && renderTextbox("firstname", "Firstname", "text")}
-
           {!signIn && renderTextbox("lastname", "Lastname", "text")}
           {renderTextbox("email", "Email", "text", "full")}
           {renderTextbox("password", "Password", "password", "full")}
@@ -95,7 +99,7 @@ function Login() {
         </div>
         {signIn && (
           <div
-            onClick={() => history.push("/forgot-password")}
+            onClick={() => navigate("/forgot-password")}
             className="forgotpassword"
           >
             {" "}

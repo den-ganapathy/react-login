@@ -3,7 +3,7 @@ import { HeaderWrapper } from "../styles/headerStyles";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { PageContext } from "./../root/Routes";
-
+import { navigate } from "@reach/router";
 function Header({ activepage }) {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -14,9 +14,8 @@ function Header({ activepage }) {
   const handleSignUp = () => {};
   const handleLogout = () => {
     setActivePage("register");
-
     dispatch({ type: "LOGOUT" });
-    history.push("/register");
+    navigate("/login");
   };
   return (
     <HeaderWrapper>
