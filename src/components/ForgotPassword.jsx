@@ -52,20 +52,20 @@ const ForgotPassword = () => {
   };
 
   const handleLogin = () => {
-    setErrorMessage("");
-    if (emailData.message === "user exist") {
-      setSubmitPassword(false);
-      setSubmitOtp(false);
-      setSubmitEmail(true);
-    } else if (otp === "1111") {
-      setSubmitPassword(false);
-      setSubmitOtp(true);
-      setSubmitEmail(false);
-    } else {
-      setSubmitPassword(true);
-      setSubmitOtp(false);
-      setSubmitEmail(false);
-    }
+    // setErrorMessage("");
+    // if (emailData.message === "user exist") {
+    //   setSubmitPassword(false);
+    //   setSubmitOtp(false);
+    //   setSubmitEmail(true);
+    // } else if (otp === "1111") {
+    //   setSubmitPassword(false);
+    //   setSubmitOtp(true);
+    //   setSubmitEmail(false);
+    // } else {
+    //   setSubmitPassword(true);
+    //   setSubmitOtp(false);
+    //   setSubmitEmail(false);
+    // }
   };
 
   const handleBack = () => {

@@ -31,13 +31,9 @@ export const signUp = (formData, navigate) => async (dispatch) => {
 
 export const checkEmail = (email) => async (dispatch) => {
   try {
-    if (email === "") {
-      dispatch({ type: START_LOADING });
-    }
     const { data } = await api.checkEmail(email);
     console.log(data);
     dispatch({ type: CHECK_EMAIL, payload: data });
-    dispatch({ type: END_LOADING });
   } catch (error) {
     console.log(error);
   }

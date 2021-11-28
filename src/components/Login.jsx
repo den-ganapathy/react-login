@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { LoginWrapper, InputWrapper } from "./../styles/loginStyles";
 import { IconButton } from "./../styles/buttonStyles";
 import fbIcon from "./../assets/images/fbIcon.png";
@@ -10,13 +10,25 @@ import { useHistory } from "react-router-dom";
 import { PageContext } from "./../root/Routes";
 import { signin, signUp } from "./../actions/auth";
 import { navigate } from "@reach/router";
+import { Validation } from "./../utils/validation";
 
 function Login() {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    loginEmail: "",
+    loginPassword: "",
+    username: "",
+    email: "",
+    password: "",
+    confirmpassword: "",
+  });
+  const [loginError, setLoginError] = useState("");
+  const [signUpError, setSignUpError] = useState("");
+
   const [signIn, setSignIn] = useState(true);
   const [error, setError] = useState({
-    firstname: "",
-    lastname: "",
+    loginEmail: "",
+    loginPassword: "",
+    username: "",
     email: "",
     password: "",
     confirmpassword: "",
@@ -44,9 +56,23 @@ function Login() {
 
   const handleForm = async () => {
     if (signIn) {
-      dispatch(signin(formData, navigate));
+      await Validation("SignIn", formData, error, setError);
+      console.log(error);
+      setError(error);
+      if (!error.loginEmail && !error.loginPassword) {
+        dispatch(signin(formData, navigate));
+      }
     } else {
-      dispatch(signUp(formData, navigate));
+      await Validation("SignUp", formData, error, setError);
+      if (
+        !error.email ||
+        !error.password ||
+        !error.username ||
+        !error.confirmpassword
+      ) {
+        console.log(!error.email);
+        dispatch(signUp(formData, navigate));
+      }
     }
   };
 
@@ -62,33 +88,50 @@ function Login() {
             type={type}
             onChange={(e) => {
               setFormData({ ...formData, [e.target.id]: e.target.value });
-              if (e.target.value === "") {
-                setError({ ...error, [e.target.id]: "* cannot be empty" });
-              } else {
-                setError({ ...error, [e.target.id]: "" });
-              }
             }}
             className=""
           ></input>
         </div>
-        {error[id].length ? (
-          <div className="errorMessage">* Required Field</div>
-        ) : (
-          ""
-        )}
       </InputWrapper>
     );
   };
 
+  useEffect(() => {
+    setError(error);
+  }, [error]);
+
+  console.log(error);
+
   return (
     <LoginWrapper>
       <div className="login-container">
-        <div className="login-error"></div>
+        {loginError && <div className="login-error"></div>}
+        {signUpError && <div className="login-error"></div>}
+
         <div className="textbox">
-          {!signIn && renderTextbox("firstname", "Firstname", "text")}
-          {!signIn && renderTextbox("lastname", "Lastname", "text")}
-          {renderTextbox("email", "Email", "text", "full")}
-          {renderTextbox("password", "Password", "password", "full")}
+          {signIn && renderTextbox("loginEmail", "Email", "text", "full")}
+          {error.loginEmail && signIn && (
+            <div className="error-message">*{error.loginEmail}</div>
+          )}
+          {signIn &&
+            renderTextbox("loginPassword", "Password", "password", "full")}
+          {error.loginPassword && signIn && (
+            <div className="error-message">*{error.loginPassword}</div>
+          )}
+
+          {!signIn && renderTextbox("username", "Firstname", "text", "full")}
+          {error.username && !signIn && (
+            <div className="error-message">*{error.username}</div>
+          )}
+
+          {!signIn && renderTextbox("email", "Email", "text", "full")}
+          {error.email && !signIn && (
+            <div className="error-message">*{error.email}</div>
+          )}
+          {!signIn && renderTextbox("password", "Password", "password", "full")}
+          {error.password && !signIn && (
+            <div className="error-message">*{error.password}</div>
+          )}
           {!signIn &&
             renderTextbox(
               "confirmpassword",
@@ -96,6 +139,9 @@ function Login() {
               "password",
               "full"
             )}
+          {error.confirmpassword && !signIn && (
+            <div className="error-message">*{error.confirmpassword}</div>
+          )}
         </div>
         {signIn && (
           <div

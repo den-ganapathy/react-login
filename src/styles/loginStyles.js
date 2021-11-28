@@ -37,6 +37,10 @@ export const LoginWrapper = styled.div`
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
+      .error-message {
+        color: red;
+        font-size: 0.8rem;
+      }
     }
     & .signin {
       margin: 2rem auto 1rem auto;
