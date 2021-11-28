@@ -2,23 +2,18 @@ var mailformat =
   /^(([^<`~!@₹€π°√△¶©®÷#$%^&*_=+?|'"/*>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export const Validation = async (value, formData, error, setError) => {
-  console.log(value);
   switch (value) {
     case "SignIn": {
       if (formData.loginEmail === "") {
-        console.log("1");
         setError((prevState) => ({
           ...error,
           loginEmail: "Please Enter Email Id",
         }));
-        console.log(error);
       } else if (!mailformat.test(formData.loginEmail)) {
-        console.log("1");
         setError((prevState) => ({
           ...prevState,
           loginEmail: "Please Enter valid Email",
         }));
-        console.log(error);
       } else {
         setError((prevState) => ({
           ...prevState,
@@ -31,7 +26,6 @@ export const Validation = async (value, formData, error, setError) => {
           ...prevState,
           loginPassword: "Please Enter Password",
         }));
-        console.log(error);
       } else {
         setError((prevState) => ({
           ...prevState,
@@ -47,12 +41,10 @@ export const Validation = async (value, formData, error, setError) => {
           email: "Please Enter Email Id",
         }));
       } else if (!mailformat.test(formData.email)) {
-        console.log("1");
         setError((prevState) => ({
           ...prevState,
           email: "Please Enter valid Email",
         }));
-        console.log(error);
       } else {
         setError({ ...error, email: "" });
       }
@@ -102,7 +94,7 @@ export const Validation = async (value, formData, error, setError) => {
       break;
     }
     default: {
-      console.log("xqf");
+      console.log("");
     }
   }
 };

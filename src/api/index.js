@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = axios.create({ baseURL: "http://localhost:8082" });
+const API = axios.create({ baseURL: "https://mern-login-api.herokuapp.com/" });
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("profile")) {
@@ -16,5 +16,3 @@ export const signUp = (formData) => API.post(`/user/signup`, formData);
 export const checkEmail = (email) => API.post(`/user/check-email`, email);
 export const updatePassword = (formData) =>
   API.put(`/user/change-password`, formData.formData);
-
-console.log(signin);

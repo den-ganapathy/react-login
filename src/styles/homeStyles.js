@@ -1,5 +1,9 @@
 import styled from "styled-components";
 
+const media = {
+  mobile: "@media(max-width:600px)",
+};
+
 export const HomeWrapper = styled.div`
   width: 100vw;
   height: 80vh;
@@ -18,5 +22,9 @@ export const HomeWrapper = styled.div`
     font-size: 1.5rem;
     font-weight: bold;
     color: #123456;
+    text-align: center;
+    ${media.mobile} {
+      font-size: 1rem;
+    }
   }
 `;

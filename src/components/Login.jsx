@@ -1,12 +1,8 @@
 import React, { useState, useContext, useEffect } from "react";
 import { LoginWrapper, InputWrapper } from "./../styles/loginStyles";
-import { IconButton } from "./../styles/buttonStyles";
-import fbIcon from "./../assets/images/fbIcon.png";
 import googleIcon from "./../assets/images/google.png";
-import twitterIcon from "./../assets/images/twitterIcon.png";
 import GoogleLogin from "react-google-login";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { PageContext } from "./../root/Routes";
 import { signin, signUp } from "./../actions/auth";
 import { navigate } from "@reach/router";
@@ -21,9 +17,8 @@ function Login() {
     password: "",
     confirmpassword: "",
   });
-  const [loginError, setLoginError] = useState("");
-  const [signUpError, setSignUpError] = useState("");
-
+  const [loginError, setLoginError] = useState(false);
+  const [signUpError, setSignUpError] = useState(false);
   const [signIn, setSignIn] = useState(true);
   const [error, setError] = useState({
     loginEmail: "",
@@ -33,8 +28,6 @@ function Login() {
     password: "",
     confirmpassword: "",
   });
-  const history = useHistory();
-  console.log(history);
 
   const dispatch = useDispatch();
   const setActivePage = useContext(PageContext);
@@ -57,11 +50,8 @@ function Login() {
   const handleForm = async () => {
     if (signIn) {
       await Validation("SignIn", formData, error, setError);
-      console.log(error);
       setError(error);
-      if (!error.loginEmail && !error.loginPassword) {
-        dispatch(signin(formData, navigate));
-      }
+      dispatch(signin(formData, navigate, setLoginError));
     } else {
       await Validation("SignUp", formData, error, setError);
       if (
@@ -70,14 +60,12 @@ function Login() {
         !error.username ||
         !error.confirmpassword
       ) {
-        console.log(!error.email);
-        dispatch(signUp(formData, navigate));
+        dispatch(signUp(formData, navigate, setSignUpError));
       }
     }
   };
 
   const renderTextbox = (id, label, type = "text", size = "half") => {
-    console.log(formData, id);
     return (
       <InputWrapper size={size}>
         <div className="label">{label}</div>
@@ -100,13 +88,22 @@ function Login() {
     setError(error);
   }, [error]);
 
-  console.log(error);
-
   return (
     <LoginWrapper>
       <div className="login-container">
-        {loginError && <div className="login-error"></div>}
-        {signUpError && <div className="login-error"></div>}
+        {loginError && (
+          <div className="form-error">Wrong username or Password Entered</div>
+        )}
+        {signUpError && (
+          <div className="form-error">
+            {formData.email === "" ||
+            formData.username === "" ||
+            formData.password === "" ||
+            formData.confirmpassword === ""
+              ? "Please Enter all required Fields"
+              : "User with Email Id already exists"}
+          </div>
+        )}
 
         <div className="textbox">
           {signIn && renderTextbox("loginEmail", "Email", "text", "full")}
@@ -119,7 +116,7 @@ function Login() {
             <div className="error-message">*{error.loginPassword}</div>
           )}
 
-          {!signIn && renderTextbox("username", "Firstname", "text", "full")}
+          {!signIn && renderTextbox("username", "Username", "text", "full")}
           {error.username && !signIn && (
             <div className="error-message">*{error.username}</div>
           )}
@@ -143,7 +140,7 @@ function Login() {
             <div className="error-message">*{error.confirmpassword}</div>
           )}
         </div>
-        {signIn && (
+        {/* {signIn && (
           <div
             onClick={() => navigate("/forgot-password")}
             className="forgotpassword"
@@ -151,7 +148,7 @@ function Login() {
             {" "}
             Forgot Password
           </div>
-        )}
+        )} */}
         <button className="signin" onClick={() => handleForm()}>
           {signIn ? "Sign In" : "Register"}
         </button>
@@ -171,11 +168,30 @@ function Login() {
           />
         </div>
         {signIn ? (
-          <div className="formfooter" onClick={() => setSignIn(false)}>
+          <div
+            className="formfooter"
+            onClick={() => {
+              setSignIn(false);
+              setLoginError(false);
+              setError({
+                username: "",
+                email: "",
+                password: "",
+                confirmpassword: "",
+              });
+            }}
+          >
             Dont have account? Sign Up
           </div>
         ) : (
-          <div className="formfooter" onClick={() => setSignIn(true)}>
+          <div
+            className="formfooter"
+            onClick={() => {
+              setSignIn(true);
+              setSignUpError(false);
+              setError({ loginEmail: "", loginPassword: "" });
+            }}
+          >
             Already Have An Account? Sign In
           </div>
         )}

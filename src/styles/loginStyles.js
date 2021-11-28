@@ -16,10 +16,12 @@ export const LoginWrapper = styled.div`
   align-items: center;
   ${media.mobile} {
     width: 100vw;
-    margin: 0 auto;
+    min-height: 100vh;
+    height: auto;
   }
 
   .login-container {
+    margin-top: 5rem;
     border-radius: 0.5rem;
     width: 25rem;
     display: flex;
@@ -30,7 +32,22 @@ export const LoginWrapper = styled.div`
     ${media.mobile} {
       width: 80vw;
       padding: 1rem;
-      margin-top: 1rem;
+      margin: 5rem 0 3rem 0;
+    }
+
+    .form-error {
+      background-color: orangered;
+      color: white;
+      padding: 0.5rem;
+      font-size: 0.8rem;
+      font-weight: bold;
+      border-radius: 5px;
+      text-align: center;
+
+      ${media.mobile} {
+        font-weight: 500;
+        font-size: 0.75rem;
+      }
     }
 
     .textbox {

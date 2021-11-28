@@ -14,6 +14,7 @@ export const HeaderWrapper = styled.div`
   width: 100vw;
   background-color: #000;
   opacity: 0.9;
+  min-height: 3rem;
   .signin {
     margin: 0 1rem;
     border: none;
@@ -33,12 +34,12 @@ export const HeaderWrapper = styled.div`
       padding: 0rem 1rem;
     }
   }
-  .signup {
+  .logout {
     margin: 0 1rem;
     border: none;
     cursor: pointer;
     border-radius: 0.5rem;
-    background-color: orange;
+    background-color: orangered;
     padding: 0.8rem 1.2rem;
     color: white;
     font-weight: bold;
@@ -49,7 +50,7 @@ export const HeaderWrapper = styled.div`
     }
     ${media.mobile} {
       font-size: 0.8rem;
-      padding: 0.5rem 1rem;
+      padding: 0.1rem 0.8rem;
     }
   }
 `;

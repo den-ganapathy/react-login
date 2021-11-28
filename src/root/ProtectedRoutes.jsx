@@ -1,17 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import SignIn from "../Pages/SignIn";
-// const user = JSON.parse(localStorage.getItem("profile"));
-// console.log(user?.length);
 
-const ProtectedRoute = ({
-  component: Component,
-  isAuthenticated,
-  ...props
-}) => {
+const ProtectedRoute = ({ component: Component, ...props }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
 
-  console.log(user?.length, user);
-  console.log(Component, isAuthenticated, props);
   return user === null || user === undefined ? (
     <SignIn {...props} />
   ) : (
